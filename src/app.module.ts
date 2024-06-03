@@ -5,6 +5,7 @@ import { ProductModule } from './product/product.module';
 import { CommonModule } from './common/common.module';
 import { SeedModule } from './seed/seed.module';
 import { FileModule } from './file/file.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { FileModule } from './file/file.module';
     ProductModule,
     CommonModule,
     SeedModule,
-    FileModule
+    FileModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

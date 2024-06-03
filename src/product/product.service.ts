@@ -7,6 +7,7 @@ import { DataSource, Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { validate as uuidValidate } from 'uuid';
 import { ProductImage } from './entities/product-image.entity';
+import { User } from 'src/auth/entities/user.entity';
 @Injectable()
 export class ProductService {
   constructor(
@@ -20,14 +21,14 @@ export class ProductService {
   ) {}
 
   private readonly logger = new Logger("ProductService")
- async create(createProductDto: CreateProductDto) {
 
+ async create(createProductDto: CreateProductDto,user:User) {
   const {images = [], ...productDetails} = createProductDto;
 
   try {
-
     const product = this.productRepository.create({
       ...productDetails,
+      user,
       images:images.map(image => this.productImageRepository.create({url: image}))
     });
     await this.productRepository.save(product);
@@ -81,7 +82,7 @@ export class ProductService {
    
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto,user:User) {
 
     const {images, ...toupdate} = updateProductDto
     const product = await this.productRepository.preload({
@@ -111,6 +112,7 @@ export class ProductService {
       }else{
         product.images= await this.productImageRepository.findBy({product:{id}})
       }
+      product.user = user;
       await queryRunner.manager.save(product);
 
       //commitTransaction() lo que hace es que si ninguna de las transacciones a dado error, aplica el commit, pero si alguna
