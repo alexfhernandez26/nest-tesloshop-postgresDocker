@@ -9,7 +9,7 @@ export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
   @Get()
-@Auth(VALID_ROLES.admin,VALID_ROLES.user)
+//@Auth(VALID_ROLES.admin,VALID_ROLES.user)
   excetedSeed(){
     return this.seedService.runSeed();
   }
